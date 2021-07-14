@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=-I.
 
 ODIR=obj
-DEPS = common.h chunk.h memory.h debug.h value.h
+DEPS = common.h chunk.h memory.h debug.h value.h vm.h
 
 _OBJ = chunk.o memory.o debug.o value.o 
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))

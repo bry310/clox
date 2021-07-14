@@ -1,1 +1,1 @@
-# An Interpreter writing in C.
+# An Interpreter writing in C
