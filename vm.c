@@ -6,22 +6,39 @@
 
 VM vm; 
 
+static void resetStack() {
+  vm.stackTop = vm.stack;
+}
+
 void initVM() {
+    resetStack();
 }
 
 void freeVM() {
 }
 
-InterpretResult interpret(Chunk* chunk) {
-  vm.chunk = chunk;
-  vm.ip = vm.chunk->code;
-  return run();
+void push(Value value) {
+  *vm.stackTop = value;
+  vm.stackTop++;
 }
 
+Value pop() {
+  vm.stackTop--;
+  return *vm.stackTop;
+}
 
 static InterpretResult run() {
 #define READ_BYTE() (*vm.ip++)
 #define READ_CONSTANT() (vm.chunk->constants.values[READ_BYTE()])
+
+    //print the stack
+    printf("          ");
+    for (Value* slot = vm.stack; slot < vm.stackTop; slot++) {
+      printf("[ ");
+      printValue(*slot);
+      printf(" ]");
+    }
+    printf("\n");
 
   for (;;) {
     #ifdef DEBUG_TRACE_EXECUTION
@@ -32,11 +49,12 @@ static InterpretResult run() {
     switch (instruction = READ_BYTE()) {
         case OP_CONSTANT: {
             Value constant = READ_CONSTANT();
-            printValue(constant);
-            printf("\n");
+            push(constant);
             break;
         }
         case OP_RETURN: {
+            printValue(pop());
+            printf("\n");
             return INTERPRET_OK;
         }
     }
@@ -45,3 +63,11 @@ static InterpretResult run() {
 #undef READ_BYTE
 #undef READ_CONSTANT
 }
+
+InterpretResult interpret(Chunk* chunk) {
+  vm.chunk = chunk;
+  vm.ip = vm.chunk->code;
+  return run();
+}
+
+
