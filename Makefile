@@ -4,7 +4,7 @@ CFLAGS=-I. #$(OBJ)
 ODIR=obj
 DEPS = ./*.h #common.h chunk.h memory.h debug.h value.h vm.h
 
-_OBJ = chunk.o memory.o debug.o value.o vm.o
+_OBJ = chunk.o memory.o debug.o value.o vm.o scanner.o compiler.o
 OBJ = $(patsubst %,$(ODIR)/%, $(_OBJ))
 
 $(ODIR)/%.o: %.c $(DEPS)
