@@ -1,5 +1,12 @@
 {
     "files.associations": {
-        "scanner.h": "c"
+        "scanner.h": "c",
+        "*.tcc": "c",
+        "istream": "c",
+        "mutex": "c",
+        "ostream": "c",
+        "stop_token": "c",
+        "typeinfo": "c",
+        "*.inc": "c"
     }
 }
