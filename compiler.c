@@ -1,88 +1,25 @@
 #include <stdio.h>
-#include <stdlib.h>
 
 #include "common.h"
 #include "compiler.h"
 #include "scanner.h"
 
-#ifdef DEBUG_PRINT_CODE
-#include "debug.h"
-#endif
-
-typedef struct {
-  Token current;
-  Token previous;
-  bool hadError;
-  bool panicMode;
-} Parser;
-
-typedef enum {
-  PREC_NONE,
-  PREC_ASSIGNMENT,  // =
-  PREC_OR,          // or
-  PREC_AND,         // and
-  PREC_EQUALITY,    // == !=
-  PREC_COMPARISON,  // < > <= >=
-  PREC_TERM,        // + -
-  PREC_FACTOR,      // * /
-  PREC_UNARY,       // ! -
-  PREC_CALL,        // . ()
-  PREC_PRIMARY
-} Precedence;
-
-
-typedef void (*ParseFn)();
-
-typedef struct {
-  ParseFn prefix;
-  ParseFn infix;
-  Precedence precedence;
-} ParseRule;
-
-
-
-Parser parser;
-
-Chunk* compilingChunk;
-
-static Chunk* currentChunk() {
-    return compilingChunk;
-}
-
-static void errorAt(Token* token, const char* message) {
-    if (parser.panicMode) return;
-    parser.panicMode = true;
-    fprintf(stderr, "[line %d] Error", token->line);
-
-    if (token->type == TOKEN_EOF) {
-        fprintf(stderr, " at end");
-    } else if (token->type == TOKEN_ERROR) {
-        // Nothing.
-    } else {
-        fprintf(stderr, " at '%.*s'", token->length, token->start);
-    }
-
-    fprintf(stderr, ": %s\n", message);
-    parser.hadError = true;
-}
-
-static void error(const char* message) {
-    errorAt(&parser.previous, message);
-}
-
-static void errorAtCurrent(const char* message) {
-    errorAt(&parser.current, message);
-}
-
-static void advance() {
-    parser.previous = parser.current;
-
+void compile(const char* source) {
+  initScanner(source);
+    int line = -1;
     for (;;) {
-        parser.current = scanToken();
-        if (parser.current.type != TOKEN_ERROR) break;
+        Token token = scanToken();
+        if (token.line != line) {
+            printf("%4d ", token.line);
+            line = token.line;
+        } else {
+            printf("   | ");
+        }
+        printf("%2d '%.*s'\n", token.type, token.length, token.start); 
 
-        errorAtCurrent(parser.current.start);
+        if (token.type == TOKEN_EOF) break;
     }
+<<<<<<< HEAD
 }
 
 static void consume(TokenType type, const char* message) {
@@ -255,4 +192,6 @@ bool compile(const char* source, Chunk* chunk) {
     consume(TOKEN_EOF, "Expect end of expression.");
     endCompiler();
     return !parser.hadError;
+=======
+>>>>>>> parent of 25da3c2 (implemented pratt parser, can parse and evaluate expressions)
 }
