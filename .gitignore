@@ -1,3 +1,5 @@
-clox
-obj
+bin/*
+obj/*
+.idea
+.vscode
 TODO.md
