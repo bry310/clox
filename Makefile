@@ -13,7 +13,8 @@ $(BIN): $(OBJS) $(SRC)/main.c
 $(OBJ)/%.o: $(SRC)/%.c $(SRC)/%.h
 	$(CC)  $(CFLAGS) -c  $< -o $@
 
-
+run: $(BIN)
+	./$(BIN)
 
 
 clean:

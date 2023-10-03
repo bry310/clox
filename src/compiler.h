@@ -3,6 +3,9 @@
 
 #include "vm.h"
 
+/*
+ * compiles a lox source to a chunk ( bite code for the vm)
+ */
 bool compile(const char* source, Chunk* chunk);
 
 #endif
