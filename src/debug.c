@@ -14,6 +14,7 @@ void disassembleChunk(Chunk* chunk, const char* name) {
 static int constantInstruction(const char* name, Chunk* chunk,
                                int offset) {
   uint8_t constant = chunk->code[offset + 1];
+  // constant is the position of the constant in values array.
   printf("%-16s %4d '", name, constant);
   printValue(chunk->constants.values[constant]);
   printf("'\n");
