@@ -11,7 +11,7 @@ BIN = $(BINDIR)/clox
 $(BIN): $(OBJS) $(SRC)/main.c $(SRCS) $(SRC)/*.h setup
 	$(CC) $(CFLAGS) $(OBJS) $(SRC)/main.c -o $@
 
-$(OBJ)/%.o: $(SRC)/%.c $(SRC)/%.h 
+$(OBJ)/%.o: $(SRC)/%.c $(SRC)/%.h $(SRC)/common.h
 	$(CC)  $(CFLAGS) -c  $< -o $@
 
 run: $(BIN)

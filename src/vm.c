@@ -2,7 +2,11 @@
 
 #include "common.h"
 #include "compiler.h"
+
+#ifdef DEBUG_TRACE_EXECUTION
 #include "debug.h"
+#endif
+
 #include "vm.h"
 
 VM vm; 
