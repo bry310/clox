@@ -5,8 +5,6 @@
 #include "compiler.h"
 #include "scanner.h"
 
-
-
 #ifdef DEBUG_PRINT_CODE
 #include "debug.h"
 #endif
@@ -32,7 +30,7 @@ typedef enum {
   PREC_PRIMARY
 } Precedence;
 
-
+/* That ParseFn type is a simple typedef for a function type that takes no arguments and returns nothing.*/
 typedef void (*ParseFn)();
 
 typedef struct {
@@ -40,8 +38,6 @@ typedef struct {
   ParseFn infix;
   Precedence precedence;
 } ParseRule;
-
-
 
 Parser parser;
 
@@ -119,7 +115,6 @@ static uint8_t makeConstant(Value value) {
     return (uint8_t)constant;
 }
 
-
 static void emitConstant(Value value) {
     emitBytes(OP_CONSTANT, makeConstant(value));
 }
@@ -134,6 +129,7 @@ static void endCompiler() {
 
 }
 
+/* These are forward declared to handle the fact that the grammar is recursive */
 static void expression();
 static ParseRule* getRule(TokenType type);
 static void parsePrecedence(Precedence precedence);
@@ -218,7 +214,6 @@ ParseRule rules[] = {
   [TOKEN_EOF]           = {NULL,     NULL,   PREC_NONE},
 };
 
-
 static void parsePrecedence(Precedence precedence) {
     advance();
     ParseFn prefixRule = getRule(parser.previous.type)->prefix;
@@ -239,7 +234,6 @@ static void parsePrecedence(Precedence precedence) {
 static ParseRule* getRule(TokenType type) {
     return &rules[type];
 }
-
 
 static void expression() {
     parsePrecedence(PREC_ASSIGNMENT);
